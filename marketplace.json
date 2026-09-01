@@ -1,0 +1,17 @@
+{
+  "name": "leo-skills",
+  "description": "Cross-tool plugin marketplace: skills and commands shared by Claude Code, Codex, and ZCode",
+  "owner": {
+    "name": "leo"
+  },
+  "plugins": [
+    {
+      "name": "hello-world",
+      "source": "./plugins/hello-world",
+      "description": "Minimal example plugin: one skill and one slash command",
+      "version": "0.1.0",
+      "category": "demo",
+      "tags": ["starter", "demo"]
+    }
+  ]
+}

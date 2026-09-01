@@ -1,0 +1,10 @@
+{
+  "name": "hello-world",
+  "version": "0.1.0",
+  "description": "Minimal example plugin with one skill and one slash command",
+  "author": {
+    "name": "leo"
+  },
+  "license": "MIT",
+  "keywords": ["starter", "demo"]
+}
