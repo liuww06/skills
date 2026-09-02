@@ -14,12 +14,20 @@ skills/
 ├── .agents/plugins/
 │   └── marketplace.json            # Codex 市场清单
 ├── plugins/
-│   └── hello-world/                # 示例插件，也是新插件的模板
-│       ├── .zcode-plugin/plugin.json    # ZCode 清单（ZCode 优先读取）
-│       ├── .claude-plugin/plugin.json   # Claude Code 清单
-│       ├── .codex-plugin/plugin.json    # Codex 清单
-│       ├── skills/greeting/SKILL.md     # 技能（三端通用）
-│       └── commands/hello.md            # 斜杠命令
+│   ├── hello-world/                # 示例插件，也是新插件的模板
+│   │   ├── .zcode-plugin/plugin.json    # ZCode 清单（ZCode 优先读取）
+│   │   ├── .claude-plugin/plugin.json   # Claude Code 清单
+│   │   ├── .codex-plugin/plugin.json    # Codex 清单
+│   │   ├── skills/greeting/SKILL.md     # 技能（三端通用）
+│   │   └── commands/hello.md            # 斜杠命令
+│   └── invest/                     # A股投资研究：9 个技能 + 9 个快捷命令
+│       ├── .zcode-plugin/plugin.json    # 三份清单内容一致
+│       ├── .claude-plugin/plugin.json
+│       ├── .codex-plugin/plugin.json
+│       ├── references/                  # 跨技能共享：数据源清单、分析规范
+│       ├── skills/                      # 市场调研 / 公司研究 / 板块分析 / 行业分析 / 宏观分析 /
+│       │                                # 技术分析 / 财报解读 / 投资决策 / 国际局势（中文技能名）
+│       └── commands/                    # /invest:market 等快捷命令（Codex 忽略）
 ├── scripts/validate.sh             # 结构校验
 └── scripts/update.sh               # 一键刷新缓存 + 新会话验证
 ```
@@ -49,22 +57,24 @@ skills/
 ```text
 /plugin marketplace add <github-user>/skills
 /plugin install hello-world@leo-skills
+/plugin install invest@leo-skills
 ```
 
-安装后输入 `/` 即可看到 `hello` 命令；`greeting` 技能会在合适时机自动触发。
+安装后输入 `/` 即可看到 `hello` 命令；`greeting` 技能会在合适时机自动触发。投资插件 `invest` 安装后可用 `/invest:market`、`/invest:stock 贵州茅台` 等快捷命令，9 个投资技能（市场调研、公司研究、板块分析、行业分析、宏观分析、技术分析、财报解读、投资决策、国际局势）会在相关对话中自动触发。
 
 ### ZCode
 
-设置 → 插件 → 右上角 **创建** → **添加插件市场**，填入本仓库的 GitHub 地址（`owner/repo` 或链接）、Git URL 或本地目录路径，然后在「个人」分段安装 `hello-world`。ZCode 原生支持加载 Claude Code 插件市场格式，无需额外适配。
+设置 → 插件 → 右上角 **创建** → **添加插件市场**，填入本仓库的 GitHub 地址（`owner/repo` 或链接）、Git URL 或本地目录路径，然后在「个人」分段安装 `hello-world`（`invest` 同理）。ZCode 原生支持加载 Claude Code 插件市场格式，无需额外适配。
 
 ### Codex
 
 ```text
 codex plugin marketplace add <github-user>/skills
 codex plugin install hello-world
+codex plugin install invest
 ```
 
-命令以 `codex plugin --help` 的实际输出为准（Codex 的插件 CLI 仍在快速演进）。
+命令以 `codex plugin --help` 的实际输出为准（Codex 的插件 CLI 仍在快速演进）。Codex 忽略 `commands/`（斜杠命令不可用），`invest` 的 9 个技能仍可正常触发。
 
 ## 新增插件
 

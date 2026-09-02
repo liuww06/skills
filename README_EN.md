@@ -14,12 +14,20 @@ skills/
 ├── .agents/plugins/
 │   └── marketplace.json            # Codex marketplace index
 ├── plugins/
-│   └── hello-world/                # example plugin & template for new plugins
-│       ├── .zcode-plugin/plugin.json    # ZCode manifest (read first)
-│       ├── .claude-plugin/plugin.json   # Claude Code manifest
-│       ├── .codex-plugin/plugin.json    # Codex manifest
-│       ├── skills/greeting/SKILL.md     # skill (all three tools)
-│       └── commands/hello.md            # slash command
+│   ├── hello-world/                # example plugin & template for new plugins
+│   │   ├── .zcode-plugin/plugin.json    # ZCode manifest (read first)
+│   │   ├── .claude-plugin/plugin.json   # Claude Code manifest
+│   │   ├── .codex-plugin/plugin.json    # Codex manifest
+│   │   ├── skills/greeting/SKILL.md     # skill (all three tools)
+│   │   └── commands/hello.md            # slash command
+│   └── invest/                     # A-share investment research: 9 skills + 9 shortcut commands
+│       ├── .zcode-plugin/plugin.json    # three identical manifests
+│       ├── .claude-plugin/plugin.json
+│       ├── .codex-plugin/plugin.json
+│       ├── references/                  # shared across skills: data sources, conventions
+│       ├── skills/                      # 9 Chinese-named skills: 市场调研 / 公司研究 / 板块分析 /
+│       │                                # 行业分析 / 宏观分析 / 技术分析 / 财报解读 / 投资决策 / 国际局势
+│       └── commands/                    # /invest:market shortcuts (ignored by Codex)
 ├── scripts/validate.sh             # structural validation
 └── scripts/update.sh               # refresh cache & verify in one shot
 ```
@@ -49,22 +57,24 @@ Replace `<github-user>/skills` below with the actual GitHub location of this rep
 ```text
 /plugin marketplace add <github-user>/skills
 /plugin install hello-world@leo-skills
+/plugin install invest@leo-skills
 ```
 
-The `hello` command appears under `/`, and the `greeting` skill triggers automatically when relevant.
+The `hello` command appears under `/`, and the `greeting` skill triggers automatically when relevant. The `invest` plugin adds shortcuts like `/invest:market` and `/invest:stock <ticker>`, plus 9 skills (market research, company research, sector, industry, macro, technical, earnings, investment decision, geopolitics) that trigger automatically in relevant conversations.
 
 ### ZCode
 
-Open Settings → Plugins → **Create** → **Add plugin marketplace**, paste this repo's GitHub address (`owner/repo` or link), a Git URL, or a local directory path, then install `hello-world` from the **Personal** section. ZCode natively loads Claude Code plugin marketplaces, so no extra adaptation is needed.
+Open Settings → Plugins → **Create** → **Add plugin marketplace**, paste this repo's GitHub address (`owner/repo` or link), a Git URL, or a local directory path, then install `hello-world` (and `invest`) from the **Personal** section. ZCode natively loads Claude Code plugin marketplaces, so no extra adaptation is needed.
 
 ### Codex
 
 ```text
 codex plugin marketplace add <github-user>/skills
 codex plugin install hello-world
+codex plugin install invest
 ```
 
-Check `codex plugin --help` for the exact subcommands in your Codex version (the Codex plugin CLI is still evolving quickly).
+Check `codex plugin --help` for the exact subcommands in your Codex version (the Codex plugin CLI is still evolving quickly). Codex ignores `commands/` (no slash commands), but `invest`'s 9 skills still trigger normally.
 
 ## Adding a new plugin
 

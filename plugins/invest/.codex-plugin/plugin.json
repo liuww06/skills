@@ -1,0 +1,10 @@
+{
+  "name": "invest",
+  "version": "0.1.0",
+  "description": "A-share investment research and decision support: web-search based skills for market, company, sector, industry, macro, technical, earnings, and geopolitics analysis",
+  "author": {
+    "name": "leo"
+  },
+  "license": "MIT",
+  "keywords": ["invest", "stocks", "a-share", "finance", "research", "china"]
+}

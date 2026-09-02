@@ -14,6 +14,16 @@
       "description": "Minimal example plugin: one skill and one slash command",
       "version": "0.1.0",
       "category": "Productivity"
+    },
+    {
+      "name": "invest",
+      "source": {
+        "source": "local",
+        "path": "./plugins/invest"
+      },
+      "description": "A-share investment research and decision support: 9 skills covering market, company, sector, industry, macro, technical, earnings, geopolitics analysis and investment decisions",
+      "version": "0.1.0",
+      "category": "Finance"
     }
   ]
 }

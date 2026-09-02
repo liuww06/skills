@@ -12,6 +12,14 @@
       "version": "0.1.0",
       "category": "demo",
       "tags": ["starter", "demo"]
+    },
+    {
+      "name": "invest",
+      "source": "./plugins/invest",
+      "description": "A-share investment research and decision support: 9 skills covering market, company, sector, industry, macro, technical, earnings, geopolitics analysis and investment decisions",
+      "version": "0.1.0",
+      "category": "finance",
+      "tags": ["invest", "stock", "a-share", "finance", "research"]
     }
   ]
 }
