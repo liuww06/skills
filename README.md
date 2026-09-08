@@ -13,6 +13,7 @@ skills/
 │   └── marketplace.json            # Claude Code 市场清单
 ├── .agents/plugins/
 │   └── marketplace.json            # Codex 市场清单
+├── AWESOME.md                      # 开源 Agent Skills 与上下文规范精选
 ├── plugins/
 │   ├── hello-world/                # 示例插件，也是新插件的模板
 │   │   ├── .zcode-plugin/plugin.json    # ZCode 清单（ZCode 优先读取）
@@ -47,6 +48,10 @@ skills/
 | `.mcp.json` | ✅ | ✅ | ✅ |
 | `commands/*.md` | ✅ | ➖ 忽略 | ✅ |
 | `agents/*.md` | ✅ | ➖ 忽略 | ✅ |
+
+## 资源精选
+
+[AWESOME.md](AWESOME.md) 收录官方与社区高质量的开源 Agent Skills（按软件工程、测试、DevOps、数据、安全、科研等领域分类），以及 **Agent 上下文规范**资源——写进 AGENTS.md / CLAUDE.md 的工程规范、安全护栏与提示词架构。条目均经核实并附中文点评，可作为选型与学习的索引。
 
 ## 安装
 

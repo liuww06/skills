@@ -13,6 +13,7 @@ skills/
 │   └── marketplace.json            # Claude Code marketplace index
 ├── .agents/plugins/
 │   └── marketplace.json            # Codex marketplace index
+├── AWESOME.md                      # curated open-source Agent Skills & context-rules list
 ├── plugins/
 │   ├── hello-world/                # example plugin & template for new plugins
 │   │   ├── .zcode-plugin/plugin.json    # ZCode manifest (read first)
@@ -47,6 +48,10 @@ Design notes:
 | `.mcp.json` | ✅ | ✅ | ✅ |
 | `commands/*.md` | ✅ | ➖ ignored | ✅ |
 | `agents/*.md` | ✅ | ➖ ignored | ✅ |
+
+## Curated resources
+
+[AWESOME.md](AWESOME.md) (in Chinese) curates high-quality open-source Agent Skills — grouped by domain: software engineering, testing, DevOps, data, security, science, and more — plus **Agent context rules**: engineering conventions, security guardrails, and prompt architecture to put into AGENTS.md / CLAUDE.md. Every entry is verified and annotated as a starting point for adoption and learning.
 
 ## Install
 
