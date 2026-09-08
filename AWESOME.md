@@ -38,6 +38,7 @@
 ### 2.1 软件工程与方法论
 
 - [obra/superpowers](https://github.com/obra/superpowers) — 约 283k star 的软件开发方法论框架(MIT)。以可组合技能 + 引导指令让 agent 自动遵循工作流:头脑风暴出规格 → git worktree 隔离 → 细粒度计划 → 子代理逐任务执行与双阶段评审;强制 TDD(先写测试否则删码)、系统化调试、完成前验证。Claude Code 官方插件市场可装,Codex / Cursor / Gemini CLI / Copilot CLI 等亦有对应安装方式。
+- [mattpocock/skills](https://github.com/mattpocock/skills) — TypeScript 教育者 Matt Pocock 的日常工程技能集(约 256k star,MIT),定位"做真工程而非氛围编程":小而可组合、可改,涵盖需求拷问(grilling)、规格与工单拆解、TDD、系统化调试、领域建模与"深模块"架构、代码评审、合并冲突解决,并以 CONTEXT.md + ADR 沉淀共享领域语言。相较 superpowers 的体系化流程更轻量;`claude plugins install mattpocock-skills` 或 `npx skills@latest add mattpocock/skills` 安装(支持 Codex 等)。
 - 多代理 PR 评审、合并冲突解决等单项工程技能,见 [kodustech 合集](https://github.com/kodustech/awesome-agent-skills)对应分类。
 
 ### 2.2 前端与全栈
