@@ -92,6 +92,11 @@
 - superpowers 的 writing-skills(技能自我沉淀)——见 [2.1](#21-软件工程与方法论)。
 - [agentskills.io 快速上手](https://agentskills.io/skill-creation/quickstart)与[格式规范](https://agentskills.io/specification)。
 
+### 2.12 输出风格与沟通
+
+- [ayghri/i-have-adhd](https://github.com/ayghri/i-have-adhd) — 约 47.7k star(MIT),单一职责的输出风格技能:制止 agent 把答案埋进长篇大论——下一动作开头、步骤编号、每轮结尾给一个具体下一步、抑制跑题、错误就事论事、列表 ≤5 条、不写"好问题!"式开场白与总结腔;灵感源自《The Adult ADHD Tool Kit》,自称"无需确诊 ADHD 也能用"。核心就是一份 SKILL.md(10 条规则),另以 Claude Code / Codex 插件、Cursor / Copilot 技能、Gemini 扩展等多形态发布:`claude plugin marketplace add ayghri/i-have-adhd` 后 `claude plugin install i-have-adhd@i-have-adhd`,`/i-have-adhd` 启用。
+- 类似的"去 AI 腔"单项技能 unslop,收录于 [kodustech 合集](https://github.com/kodustech/awesome-agent-skills)。
+
 ## 三、Agent 上下文规范(AGENTS.md / CLAUDE.md / Rules)
 
 > 这类资源回答"往 AGENTS.md / CLAUDE.md 等规则文件里写什么":工程规范、安全护栏与指令架构,决定 agent 的默认行为与边界。
