@@ -20,6 +20,14 @@
       "version": "0.1.0",
       "category": "finance",
       "tags": ["invest", "stock", "a-share", "finance", "research"]
+    },
+    {
+      "name": "image",
+      "source": "./plugins/image",
+      "description": "Image processing toolkit: high-fidelity photo restoration that repairs scanned, aged, damaged, or low-quality photographs while preserving identity and original content",
+      "version": "0.1.0",
+      "category": "media",
+      "tags": ["image", "photo", "restoration", "repair"]
     }
   ]
 }

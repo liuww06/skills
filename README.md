@@ -21,14 +21,20 @@ skills/
 │   │   ├── .codex-plugin/plugin.json    # Codex 清单
 │   │   ├── skills/greeting/SKILL.md     # 技能（三端通用）
 │   │   └── commands/hello.md            # 斜杠命令
-│   └── invest/                     # A股投资研究：9 个技能 + 9 个快捷命令
+│   ├── invest/                     # A股投资研究：9 个技能 + 9 个快捷命令
+│   │   ├── .zcode-plugin/plugin.json    # 三份清单内容一致
+│   │   ├── .claude-plugin/plugin.json
+│   │   ├── .codex-plugin/plugin.json
+│   │   ├── references/                  # 跨技能共享：数据源清单、分析规范
+│   │   ├── skills/                      # 市场调研 / 公司研究 / 板块分析 / 行业分析 / 宏观分析 /
+│   │   │                                # 技术分析 / 财报解读 / 投资决策 / 国际局势（中文技能名）
+│   │   └── commands/                    # /invest:market 等快捷命令（Codex 忽略）
+│   └── image/                      # 图像处理：照片修复（1 个技能 + 1 个快捷命令）
 │       ├── .zcode-plugin/plugin.json    # 三份清单内容一致
 │       ├── .claude-plugin/plugin.json
 │       ├── .codex-plugin/plugin.json
-│       ├── references/                  # 跨技能共享：数据源清单、分析规范
-│       ├── skills/                      # 市场调研 / 公司研究 / 板块分析 / 行业分析 / 宏观分析 /
-│       │                                # 技术分析 / 财报解读 / 投资决策 / 国际局势（中文技能名）
-│       └── commands/                    # /invest:market 等快捷命令（Codex 忽略）
+│       ├── skills/photo-restoration/SKILL.md   # 高保真照片修复技能
+│       └── commands/restore.md                # /image:restore 快捷命令（Codex 忽略）
 ├── scripts/validate.sh             # 结构校验
 └── scripts/update.sh               # 一键刷新缓存 + 新会话验证
 ```
@@ -63,13 +69,14 @@ skills/
 /plugin marketplace add <github-user>/skills
 /plugin install hello-world@leo-skills
 /plugin install invest@leo-skills
+/plugin install image@leo-skills
 ```
 
-安装后输入 `/` 即可看到 `hello` 命令；`greeting` 技能会在合适时机自动触发。投资插件 `invest` 安装后可用 `/invest:market`、`/invest:stock 贵州茅台` 等快捷命令，9 个投资技能（市场调研、公司研究、板块分析、行业分析、宏观分析、技术分析、财报解读、投资决策、国际局势）会在相关对话中自动触发。
+安装后输入 `/` 即可看到 `hello` 命令；`greeting` 技能会在合适时机自动触发。投资插件 `invest` 安装后可用 `/invest:market`、`/invest:stock 贵州茅台` 等快捷命令，9 个投资技能（市场调研、公司研究、板块分析、行业分析、宏观分析、技术分析、财报解读、投资决策、国际局势）会在相关对话中自动触发。图像插件 `image` 安装后可用 `/image:restore <图片路径>` 修复照片，`photo-restoration` 技能（高保真照片修复：去污去划痕、两阶段修复、优先保持原貌）在对话中请求照片修复时自动触发。
 
 ### ZCode
 
-设置 → 插件 → 右上角 **创建** → **添加插件市场**，填入本仓库的 GitHub 地址（`owner/repo` 或链接）、Git URL 或本地目录路径，然后在「个人」分段安装 `hello-world`（`invest` 同理）。ZCode 原生支持加载 Claude Code 插件市场格式，无需额外适配。
+设置 → 插件 → 右上角 **创建** → **添加插件市场**，填入本仓库的 GitHub 地址（`owner/repo` 或链接）、Git URL 或本地目录路径，然后在「个人」分段安装 `hello-world`（`invest`、`image` 同理）。ZCode 原生支持加载 Claude Code 插件市场格式，无需额外适配。
 
 ### Codex
 
@@ -77,9 +84,10 @@ skills/
 codex plugin marketplace add <github-user>/skills
 codex plugin install hello-world
 codex plugin install invest
+codex plugin install image
 ```
 
-命令以 `codex plugin --help` 的实际输出为准（Codex 的插件 CLI 仍在快速演进）。Codex 忽略 `commands/`（斜杠命令不可用），`invest` 的 9 个技能仍可正常触发。
+命令以 `codex plugin --help` 的实际输出为准（Codex 的插件 CLI 仍在快速演进）。Codex 忽略 `commands/`（斜杠命令不可用），`invest` 的 9 个技能与 `image` 的照片修复技能仍可正常触发。
 
 ## 新增插件
 

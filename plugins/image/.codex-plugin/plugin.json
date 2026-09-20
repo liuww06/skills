@@ -1,0 +1,10 @@
+{
+  "name": "image",
+  "version": "0.1.0",
+  "description": "Image processing toolkit: high-fidelity photo restoration for scanned, aged, damaged, or low-quality photographs, preserving identity and original content",
+  "author": {
+    "name": "leo"
+  },
+  "license": "MIT",
+  "keywords": ["image", "photo", "restoration", "repair", "enhance"]
+}
