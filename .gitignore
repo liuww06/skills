@@ -5,6 +5,9 @@ Thumbs.db
 # Editors
 .idea/
 
+# ZCode local data
+.zcode/
+
 # Claude Code local settings
 .claude/settings.local.json
 
