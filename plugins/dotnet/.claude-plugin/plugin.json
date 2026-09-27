@@ -1,0 +1,8 @@
+{
+  "name": "dotnet",
+  "version": "0.1.0",
+  "description": "Scaffold new .NET libraries, apps and services with official templates and optional Clean Architecture, DDD, MVVM and microservice structures",
+  "author": { "name": "leo" },
+  "license": "MIT",
+  "keywords": ["dotnet", "csharp", "scaffold", "wpf", "ddd", "microservices"]
+}

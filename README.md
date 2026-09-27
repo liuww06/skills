@@ -4,6 +4,15 @@
 
 一个仓库，三端通用的插件市场：同一份插件源码可被 **Claude Code**、**OpenAI Codex** 和 **ZCode**（智谱）直接安装使用。
 
+## 插件列表
+
+| 插件 | 用途 |
+| --- | --- |
+| [hello-world](plugins/hello-world/skills/greeting/SKILL.md) | 最小示例插件，演示 Skill 与命令入口。 |
+| [invest](plugins/invest/) | A 股投资研究，覆盖市场、公司、行业、财报等 9 个方向。 |
+| [image](plugins/image/skills/photo-restoration/SKILL.md) | 高保真照片修复，优先保留人物与原始场景。 |
+| [dotnet](plugins/dotnet/skills/dotnet-scaffold/SKILL.md) | 新建 .NET 类库、桌面应用、Web 和服务代码库，默认简单，按需支持 Clean Architecture、DDD、MVVM 和微服务。 |
+
 ## 目录结构
 
 ```text
@@ -29,12 +38,18 @@ skills/
 │   │   ├── skills/                      # 市场调研 / 公司研究 / 板块分析 / 行业分析 / 宏观分析 /
 │   │   │                                # 技术分析 / 财报解读 / 投资决策 / 国际局势（中文技能名）
 │   │   └── commands/                    # /invest:market 等快捷命令（Codex 忽略）
-│   └── image/                      # 图像处理：照片修复（1 个技能 + 1 个快捷命令）
-│       ├── .zcode-plugin/plugin.json    # 三份清单内容一致
+│   ├── image/                      # 图像处理：照片修复（1 个技能 + 1 个快捷命令）
+│   │   ├── .zcode-plugin/plugin.json
+│   │   ├── .claude-plugin/plugin.json
+│   │   ├── .codex-plugin/plugin.json
+│   │   ├── skills/photo-restoration/SKILL.md
+│   │   └── commands/restore.md
+│   └── dotnet/                     # .NET 新代码库脚手架（1 个技能 + 1 个快捷命令）
+│       ├── .zcode-plugin/plugin.json
 │       ├── .claude-plugin/plugin.json
-│       ├── .codex-plugin/plugin.json
-│       ├── skills/photo-restoration/SKILL.md   # 高保真照片修复技能
-│       └── commands/restore.md                # /image:restore 快捷命令（Codex 忽略）
+│       ├── .codex-plugin/plugin.json    # Codex 增加 interface 元数据
+│       ├── skills/dotnet-scaffold/     # 入口、按需参考资料、配置与性能模板
+│       └── commands/dotnet-new.md      # Codex 通过 Skill 调用
 ├── scripts/validate.sh             # 结构校验
 └── scripts/update.sh               # 一键刷新缓存 + 新会话验证
 ```
@@ -42,7 +57,7 @@ skills/
 设计要点：
 
 - 插件源码（`skills/`、`commands/`、`hooks/hooks.json`、`.mcp.json`）三端格式通用，只写一份。
-- 每个插件维护三份内容一致的清单：`.zcode-plugin/plugin.json`（ZCode 推荐位置，查找优先级最高）、`.claude-plugin/plugin.json`（Claude Code）、`.codex-plugin/plugin.json`（Codex）。ZCode 也兼容 `.claude-plugin/` 回退，但本仓库采用其推荐方式；若某插件需要 ZCode 专属配置（如 `userConfig`），改 `.zcode-plugin/` 那份即可。
+- 每个插件维护三份公共元数据一致的清单：`.zcode-plugin/plugin.json`（ZCode 推荐位置）、`.claude-plugin/plugin.json`（Claude Code）、`.codex-plugin/plugin.json`（Codex）。字段分别满足宿主要求，例如 dotnet 的 Codex 清单含 interface 元数据。ZCode 也兼容 `.claude-plugin/` 回退。
 - Codex 使用自己的清单（`.codex-plugin/plugin.json`）与市场索引（`.agents/plugins/marketplace.json`）。
 
 ## 组件兼容矩阵
@@ -70,13 +85,14 @@ skills/
 /plugin install hello-world@leo-skills
 /plugin install invest@leo-skills
 /plugin install image@leo-skills
+/plugin install dotnet@leo-skills
 ```
 
 安装后输入 `/` 即可看到 `hello` 命令；`greeting` 技能会在合适时机自动触发。投资插件 `invest` 安装后可用 `/invest:market`、`/invest:stock 贵州茅台` 等快捷命令，9 个投资技能（市场调研、公司研究、板块分析、行业分析、宏观分析、技术分析、财报解读、投资决策、国际局势）会在相关对话中自动触发。图像插件 `image` 安装后可用 `/image:restore <图片路径>` 修复照片，`photo-restoration` 技能（高保真照片修复：去污去划痕、两阶段修复、优先保持原貌）在对话中请求照片修复时自动触发。
 
 ### ZCode
 
-设置 → 插件 → 右上角 **创建** → **添加插件市场**，填入本仓库的 GitHub 地址（`owner/repo` 或链接）、Git URL 或本地目录路径，然后在「个人」分段安装 `hello-world`（`invest`、`image` 同理）。ZCode 原生支持加载 Claude Code 插件市场格式，无需额外适配。
+设置 → 插件 → 右上角 **创建** → **添加插件市场**，填入本仓库的 GitHub 地址（`owner/repo` 或链接）、Git URL 或本地目录路径，然后在「个人」分段安装 `hello-world`（`invest`、`image`、`dotnet` 同理）。ZCode 原生支持加载 Claude Code 插件市场格式，无需额外适配。
 
 ### Codex
 
@@ -114,6 +130,16 @@ bash scripts/update.sh hello-world   # 只处理指定插件
 ```bash
 ln -sfn /path/to/skills/plugins/<插件> ~/.claude/skills/<插件>
 ```
+
+dotnet 的专项验证命令：
+
+```text
+python scripts/validate-dotnet.py
+python scripts/test-dotnet-scaffold.py
+node --experimental-vm-modules scripts/test-dotnet-performance.mjs
+```
+
+静态检查需要 PyYAML；生成测试需要 .NET SDK，在临时目录中运行，添加 `--online` 可覆盖需 NuGet 的案例。性能脚本检查使用模拟传输；生成规则检查与新会话触发、实际压测分别验证。
 
 ## License
 

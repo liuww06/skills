@@ -28,6 +28,14 @@
       "version": "0.1.0",
       "category": "media",
       "tags": ["image", "photo", "restoration", "repair"]
+    },
+    {
+      "name": "dotnet",
+      "source": "./plugins/dotnet",
+      "description": "Scaffold new .NET libraries, apps and services with optional Clean Architecture, DDD, MVVM and microservice structures",
+      "version": "0.1.0",
+      "category": "development",
+      "tags": ["dotnet", "csharp", "scaffold", "wpf", "ddd", "microservices"]
     }
   ]
 }

@@ -1,0 +1,20 @@
+{
+  "name": "dotnet",
+  "version": "0.1.0",
+  "description": "Scaffold new .NET libraries, apps and services with official templates and optional Clean Architecture, DDD, MVVM and microservice structures",
+  "author": {
+    "name": "leo"
+  },
+  "license": "MIT",
+  "keywords": ["dotnet", "csharp", "scaffold", "wpf", "ddd", "microservices"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": ".NET 项目脚手架",
+    "shortDescription": "创建简单或按需分层的 .NET 代码库",
+    "longDescription": "从官方模板新建类库、桌面应用、Web 与服务；默认最小可运行，按需组合 Clean Architecture、DDD、MVVM 和微服务。",
+    "developerName": "leo",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": "使用 dotnet-scaffold 帮我搭建一个 .NET 类库项目的基础结构。"
+  }
+}

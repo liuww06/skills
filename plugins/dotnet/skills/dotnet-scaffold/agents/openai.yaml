@@ -1,0 +1,4 @@
+interface:
+  display_name: ".NET 项目脚手架"
+  short_description: "从官方模板创建 .NET 代码库，按需组合简单布局、MVVM、DDD 和微服务"
+  default_prompt: "使用 $dotnet-scaffold 帮我搭建一个 .NET 类库项目的基础结构。"

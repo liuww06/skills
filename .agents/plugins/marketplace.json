@@ -34,6 +34,20 @@
       "description": "Image processing toolkit: high-fidelity photo restoration that repairs scanned, aged, damaged, or low-quality photographs while preserving identity and original content",
       "version": "0.1.0",
       "category": "Media"
+    },
+    {
+      "name": "dotnet",
+      "source": {
+        "source": "local",
+        "path": "./plugins/dotnet"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity",
+      "version": "0.1.0",
+      "description": "Scaffold new .NET libraries, apps and services with optional Clean Architecture, DDD, MVVM and microservice structures"
     }
   ]
 }

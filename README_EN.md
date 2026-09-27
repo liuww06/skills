@@ -4,6 +4,15 @@ English | [中文](README.md)
 
 A single-repo plugin marketplace consumable by **Claude Code**, **OpenAI Codex**, and **ZCode** (Zhipu) — plugin sources are written once and installed everywhere.
 
+## Plugins
+
+| Plugin | Purpose |
+| --- | --- |
+| [hello-world](plugins/hello-world/skills/greeting/SKILL.md) | Minimal example of a skill and command entry point. |
+| [invest](plugins/invest/) | A-share investment research across nine areas, including markets, companies, industries and earnings. |
+| [image](plugins/image/skills/photo-restoration/SKILL.md) | High-fidelity photo restoration that preserves people and the original scene. |
+| [dotnet](plugins/dotnet/skills/dotnet-scaffold/SKILL.md) | New .NET libraries, desktop apps, web apps and services, simple by default with optional Clean Architecture, DDD, MVVM and microservices. |
+
 ## Repository layout
 
 ```text
@@ -29,12 +38,18 @@ skills/
 │   │   ├── skills/                      # 9 Chinese-named skills: 市场调研 / 公司研究 / 板块分析 /
 │   │   │                                # 行业分析 / 宏观分析 / 技术分析 / 财报解读 / 投资决策 / 国际局势
 │   │   └── commands/                    # /invest:market shortcuts (ignored by Codex)
-│   └── image/                      # image processing: photo restoration (1 skill + 1 shortcut command)
-│       ├── .zcode-plugin/plugin.json    # three identical manifests
+│   ├── image/                      # image processing: photo restoration
+│   │   ├── .zcode-plugin/plugin.json
+│   │   ├── .claude-plugin/plugin.json
+│   │   ├── .codex-plugin/plugin.json
+│   │   ├── skills/photo-restoration/SKILL.md
+│   │   └── commands/restore.md
+│   └── dotnet/                     # new .NET codebases: 1 skill + 1 command
+│       ├── .zcode-plugin/plugin.json
 │       ├── .claude-plugin/plugin.json
-│       ├── .codex-plugin/plugin.json
-│       ├── skills/photo-restoration/SKILL.md   # high-fidelity photo restoration skill
-│       └── commands/restore.md                # /image:restore shortcut (ignored by Codex)
+│       ├── .codex-plugin/plugin.json    # includes Codex interface metadata
+│       ├── skills/dotnet-scaffold/     # entry, references and output assets
+│       └── commands/dotnet-new.md      # Codex uses the skill instead
 ├── scripts/validate.sh             # structural validation
 └── scripts/update.sh               # refresh cache & verify in one shot
 ```
@@ -42,7 +57,7 @@ skills/
 Design notes:
 
 - Plugin sources (`skills/`, `commands/`, `hooks/hooks.json`, `.mcp.json`) share one format across all three tools — write once.
-- Each plugin ships three identical manifests: `.zcode-plugin/plugin.json` (ZCode's recommended location, highest lookup priority), `.claude-plugin/plugin.json` (Claude Code), and `.codex-plugin/plugin.json` (Codex). ZCode also falls back to `.claude-plugin/`, but this repo uses its recommended location; put ZCode-specific options (e.g. `userConfig`) in the `.zcode-plugin/` copy.
+- Each plugin ships three manifests with matching shared metadata: `.zcode-plugin/plugin.json` (ZCode), `.claude-plugin/plugin.json` (Claude Code), and `.codex-plugin/plugin.json` (Codex). Host-specific fields may differ; dotnet includes Codex interface metadata. ZCode also supports the Claude manifest fallback.
 - Codex uses its own manifest (`.codex-plugin/plugin.json`) and marketplace index (`.agents/plugins/marketplace.json`).
 
 ## Component compatibility
@@ -70,13 +85,14 @@ Replace `<github-user>/skills` below with the actual GitHub location of this rep
 /plugin install hello-world@leo-skills
 /plugin install invest@leo-skills
 /plugin install image@leo-skills
+/plugin install dotnet@leo-skills
 ```
 
 The `hello` command appears under `/`, and the `greeting` skill triggers automatically when relevant. The `invest` plugin adds shortcuts like `/invest:market` and `/invest:stock <ticker>`, plus 9 skills (market research, company research, sector, industry, macro, technical, earnings, investment decision, geopolitics) that trigger automatically in relevant conversations. The `image` plugin adds `/image:restore <image path>` and a `photo-restoration` skill (conservative high-fidelity restoration: damage repair, two-phase workflow, fidelity over enhancement) that triggers on photo-restoration requests.
 
 ### ZCode
 
-Open Settings → Plugins → **Create** → **Add plugin marketplace**, paste this repo's GitHub address (`owner/repo` or link), a Git URL, or a local directory path, then install `hello-world` (and `invest`, `image`) from the **Personal** section. ZCode natively loads Claude Code plugin marketplaces, so no extra adaptation is needed.
+Open Settings → Plugins → **Create** → **Add plugin marketplace**, paste this repo's GitHub address (`owner/repo` or link), a Git URL, or a local directory path, then install `hello-world` (and `invest`, `image`, `dotnet`) from the **Personal** section. ZCode natively loads Claude Code plugin marketplaces, so no extra adaptation is needed.
 
 ### Codex
 
@@ -114,6 +130,16 @@ For zero-reinstall iteration, symlink the plugin into your personal skills dir i
 ```bash
 ln -sfn /path/to/skills/plugins/<plugin> ~/.claude/skills/<plugin>
 ```
+
+Additional dotnet validation commands:
+
+```text
+python scripts/validate-dotnet.py
+python scripts/test-dotnet-scaffold.py
+node --experimental-vm-modules scripts/test-dotnet-performance.mjs
+```
+
+Static checks require PyYAML. Generation tests require the .NET SDK and run in temporary directories; add `--online` for NuGet-dependent cases. Performance-script checks use mock transport. Recipe checks, fresh-session skill selection and actual load tests are separate validations.
 
 ## License
 
