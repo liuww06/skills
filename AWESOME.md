@@ -8,6 +8,7 @@
 ## 一、官方资源与开放标准
 
 - [anthropics/skills](https://github.com/anthropics/skills) — Anthropic 官方技能仓库(约 175k star)。除文档技能四件套 docx / pptx / xlsx / pdf 为 source-available 外均为 Apache 2.0;另含 skill-creator、mcp-builder、webapp-testing、frontend-design 等示例,及官方技能模板 `template/`。Claude Code 安装:`/plugin marketplace add anthropics/skills`。
+- [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) — Anthropic 官方维护的 Claude Code 插件目录(约 37.1k star,Apache 2.0),`/plugin` Discover 页背后的官方市场。内置插件近 40 个:工程流程(code-review、pr-review-toolkit、feature-dev、code-modernization)、元开发(skill-creator、plugin-dev、mcp-server-dev、agent-sdk-dev)、安全(claude-security、security-guidance)、hookify,及 pyright / typescript / gopls / rust-analyzer 等 12 门语言的 LSP 插件;另收经质量与安全审核的第三方合作插件(github、gitlab、linear、firebase、terraform、playwright、context7、serena 等,[2.3](#23-后端与语言生态) 的 laravel-boost 亦经此分发)。插件可捆绑 skills / commands / agents / MCP 服务器,官方 README 提醒安装前自行核验信任;`/plugin install {name}@claude-plugins-official` 安装。
 - [Agent Skills 开放标准](https://agentskills.io/) — SKILL.md 格式规范站(标准仓库 [agentskills/agentskills](https://github.com/agentskills/agentskills))。核心是渐进披露三阶段:发现(只读元数据)→ 激活(按需载入全文)→ 执行(可选跑捆绑脚本);已被 Claude Code、Codex、Cursor、Gemini CLI、Copilot 等 26+ 客户端采纳。附[快速上手](https://agentskills.io/skill-creation/quickstart)与[完整规范](https://agentskills.io/specification)。
 - [Agent Skills 官方文档](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) — 概念、用法与[编写最佳实践](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)。
 - [Claude Code 技能文档](https://code.claude.com/docs/en/skills) — 技能在 Claude Code 中的启用与管理。
@@ -33,7 +34,7 @@
 - [xstongxue/best-skills](https://github.com/xstongxue/best-skills) — 通用中文技能合集,可装入 Cursor / Claude Code / Codex 等的 skills 目录。
 - [datawhalechina/hello-agents](https://github.com/datawhalechina/hello-agents) — 中文 Agent 开发教程,含 Skills 与 MCP 两种范式的对比与实战案例。
 
-聚合入口:[GitHub topic: claude-code-skills](https://github.com/topics/claude-code-skills) · [GitHub topic: anthropic-skills](https://github.com/topics/anthropic-skills)
+聚合入口:[GitHub topic: claude-code-skills](https://github.com/topics/claude-code-skills) · [GitHub topic: anthropic-skills](https://github.com/topics/anthropic-skills) · 官方插件市场 [claude-plugins-official](https://github.com/anthropics/claude-plugins-official) 见[第一章](#一官方资源与开放标准)
 
 ### 2.1 软件工程与方法论
 
