@@ -36,6 +36,21 @@
       "version": "0.1.0",
       "category": "development",
       "tags": ["dotnet", "csharp", "scaffold", "wpf", "ddd", "microservices"]
+    },
+    {
+      "name": "engineering",
+      "source": "./plugins/engineering",
+      "description": "Maintain existing codebases with evidence-based assessment, bug fixes, regression tests, behavior-preserving refactoring and change review",
+      "version": "0.1.0",
+      "category": "development",
+      "tags": [
+        "engineering",
+        "maintenance",
+        "testing",
+        "review",
+        "refactoring",
+        "dotnet"
+      ]
     }
   ]
 }

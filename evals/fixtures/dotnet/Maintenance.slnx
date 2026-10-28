@@ -1,0 +1,11 @@
+<Solution>
+  <Project Path="src/Pricing/Pricing.csproj" />
+  <Project Path="src/Contracts/Contracts.csproj" />
+  <Project Path="src/Checkout/Checkout.csproj" />
+  <Project Path="src/Catalog.Api/Catalog.Api.csproj" />
+  <Project Path="src/Queue.Worker/Queue.Worker.csproj" />
+  <Project Path="tests/Pricing.Tests/Pricing.Tests.csproj" />
+  <Project Path="tests/Checkout.Tests/Checkout.Tests.csproj" />
+  <Project Path="tests/Catalog.Api.Tests/Catalog.Api.Tests.csproj" />
+  <Project Path="tests/Queue.Worker.Tests/Queue.Worker.Tests.csproj" />
+</Solution>

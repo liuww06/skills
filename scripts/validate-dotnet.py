@@ -8,7 +8,7 @@ import re
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
-import yaml
+from validation import frontmatter, load_yaml, require, validate
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,43 +16,10 @@ PLUGIN = ROOT / "plugins/dotnet"
 SKILL = PLUGIN / "skills/dotnet-scaffold"
 
 
-def require(condition, message):
-    if not condition:
-        raise ValueError(message)
-
-
-def frontmatter(path):
-    text = path.read_text(encoding="utf-8")
-    require(text.startswith("---\n"), f"Missing frontmatter: {path}")
-    return yaml.safe_load(text.split("---", 2)[1])
-
-
 def main():
-    manifests = [json.loads((PLUGIN / host / "plugin.json").read_text(encoding="utf-8"))
-                 for host in (".codex-plugin", ".claude-plugin", ".zcode-plugin")]
-    for key in ("name", "version", "description", "author", "license", "keywords"):
-        require(all(m[key] == manifests[0][key] for m in manifests), f"Manifest mismatch: {key}")
-    require(manifests[0]["name"] == PLUGIN.name, "Plugin name/path mismatch")
-    require(re.fullmatch(r"\d+\.\d+\.\d+", manifests[0]["version"]), "Invalid release version")
-    for index in ("marketplace.json", ".claude-plugin/marketplace.json", ".agents/plugins/marketplace.json"):
-        entries = json.loads((ROOT / index).read_text(encoding="utf-8"))["plugins"]
-        matches = [e for e in entries if e["name"] == "dotnet"]
-        require(len(matches) == 1, f"Expected one dotnet entry: {index}")
-        entry = matches[0]
-        source = entry["source"]
-        if isinstance(source, dict):
-            require(source["source"] == "local", "Invalid Codex source")
-            require(entry["policy"] == {"installation": "AVAILABLE", "authentication": "ON_INSTALL"}, "Invalid policy")
-            require(entry["category"] == "Productivity", "Invalid Codex category")
-            source = source["path"]
-        require(source == "./plugins/dotnet", f"Invalid source in {index}")
-        require(entry["version"] == manifests[0]["version"], f"Version mismatch: {index}")
-    require((ROOT / "marketplace.json").read_bytes() == (ROOT / ".claude-plugin/marketplace.json").read_bytes(), "ZCode/Claude indexes differ")
-    meta = frontmatter(SKILL / "SKILL.md")
-    require(meta["name"] == SKILL.name and bool(meta["description"]), "Invalid Skill metadata")
-    require(bool(frontmatter(PLUGIN / "commands/dotnet-new.md")["description"]), "Invalid command")
-    ui = yaml.safe_load((SKILL / "agents/openai.yaml").read_text(encoding="utf-8"))
-    require("$dotnet-scaffold" in ui["interface"]["default_prompt"], "UI prompt must name Skill")
+    errors = validate(ROOT)
+    require(not errors, "\n".join(errors))
+    ui = load_yaml((SKILL / "agents/openai.yaml").read_text(encoding="utf-8"))
     require(ui.get("policy", {}).get("allow_implicit_invocation", True), "Implicit discovery disabled")
 
     # Follow local Markdown links from the entrypoint; ensure all shipped references/assets are reachable.

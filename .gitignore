@@ -14,3 +14,12 @@ Thumbs.db
 # Logs & dependencies
 *.log
 node_modules/
+__pycache__/
+*.py[cod]
+**/bin/
+**/obj/
+TestResults/
+
+# Local evaluation workspaces and generated results
+/evals/runs/
+/evals/results/

@@ -1,0 +1,27 @@
+{
+  "name": "engineering",
+  "version": "0.1.0",
+  "description": "Maintain existing codebases with evidence-based assessment, bug fixes, regression tests, behavior-preserving refactoring and change review",
+  "author": {
+    "name": "leo"
+  },
+  "license": "MIT",
+  "keywords": [
+    "engineering",
+    "maintenance",
+    "testing",
+    "review",
+    "refactoring",
+    "dotnet"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "软件工程维护",
+    "shortDescription": "理解、修复、测试、重构与评审存量项目",
+    "longDescription": "遵循目标仓库约定，以可复验的代码、测试和运行证据完成日常维护。",
+    "developerName": "leo",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": "使用 repo-assess 帮我理解当前代码库的构建、运行和维护风险。"
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "缺陷定位与修复"
+  short_description: "遵循已有工程约定，缺陷定位与修复，交付可复验的结果与证据"
+  default_prompt: "使用 $bugfix 帮我完成当前项目的缺陷定位与修复。"

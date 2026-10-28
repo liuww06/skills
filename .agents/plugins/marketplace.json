@@ -48,6 +48,20 @@
       "category": "Productivity",
       "version": "0.1.0",
       "description": "Scaffold new .NET libraries, apps and services with optional Clean Architecture, DDD, MVVM and microservice structures"
+    },
+    {
+      "name": "engineering",
+      "source": {
+        "source": "local",
+        "path": "./plugins/engineering"
+      },
+      "description": "Maintain existing codebases with evidence-based assessment, bug fixes, regression tests, behavior-preserving refactoring and change review",
+      "version": "0.1.0",
+      "category": "Productivity",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      }
     }
   ]
 }

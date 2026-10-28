@@ -2,7 +2,7 @@
 
 English | [中文](README.md)
 
-A single-repo plugin marketplace consumable by **Claude Code**, **OpenAI Codex**, and **ZCode** (Zhipu) — plugin sources are written once and installed everywhere.
+A plugin marketplace for **Claude Code**, **OpenAI Codex**, and **ZCode** (Zhipu), sharing skill sources and keeping three host manifests. See [compatibility evidence](docs/compatibility.md) for verified and unverified combinations.
 
 ## Plugins
 
@@ -12,6 +12,7 @@ A single-repo plugin marketplace consumable by **Claude Code**, **OpenAI Codex**
 | [invest](plugins/invest/) | A-share investment research across nine areas, including markets, companies, industries and earnings. |
 | [image](plugins/image/skills/photo-restoration/SKILL.md) | High-fidelity photo restoration that preserves people and the original scene. |
 | [dotnet](plugins/dotnet/skills/dotnet-scaffold/SKILL.md) | New .NET libraries, desktop apps, web apps and services, simple by default with optional Clean Architecture, DDD, MVVM and microservices. |
+| [engineering](docs/engineering.md) | Existing-code maintenance: repository assessment, bug fixes, regression tests, behavior-preserving refactoring and change review. |
 
 ## Repository layout
 
@@ -44,14 +45,19 @@ skills/
 │   │   ├── .codex-plugin/plugin.json
 │   │   ├── skills/photo-restoration/SKILL.md
 │   │   └── commands/restore.md
+│   ├── engineering/                # 5 maintenance skills, forwarding commands and shared references
 │   └── dotnet/                     # new .NET codebases: 1 skill + 1 command
 │       ├── .zcode-plugin/plugin.json
 │       ├── .claude-plugin/plugin.json
 │       ├── .codex-plugin/plugin.json    # includes Codex interface metadata
 │       ├── skills/dotnet-scaffold/     # entry, references and output assets
 │       └── commands/dotnet-new.md      # Codex uses the skill instead
-├── scripts/validate.sh             # structural validation
-└── scripts/update.sh               # refresh cache & verify in one shot
+├── scripts/validate.py             # cross-platform validation; validate.sh is the Bash entrypoint
+├── scripts/sync-version.py         # synchronize six version fields; --check / --diff
+├── scripts/update.sh               # refresh and host discovery checks
+├── evals/                          # cases and fixture sources; local runs/results are ignored
+├── tests/                          # tooling regression tests
+└── .github/workflows/validate.yml   # static and scoped deterministic checks
 ```
 
 Design notes:
@@ -60,7 +66,9 @@ Design notes:
 - Each plugin ships three manifests with matching shared metadata: `.zcode-plugin/plugin.json` (ZCode), `.claude-plugin/plugin.json` (Claude Code), and `.codex-plugin/plugin.json` (Codex). Host-specific fields may differ; dotnet includes Codex interface metadata. ZCode also supports the Claude manifest fallback.
 - Codex uses its own manifest (`.codex-plugin/plugin.json`) and marketplace index (`.agents/plugins/marketplace.json`).
 
-## Component compatibility
+## Distribution conventions
+
+This table describes the intended distribution format, not completed runtime validation. See [host evidence](docs/compatibility.md) for versions, dates and unverified steps.
 
 | Component | Claude Code | Codex | ZCode |
 | --- | :---: | :---: | :---: |
@@ -86,13 +94,14 @@ Replace `<github-user>/skills` below with the actual GitHub location of this rep
 /plugin install invest@leo-skills
 /plugin install image@leo-skills
 /plugin install dotnet@leo-skills
+/plugin install engineering@leo-skills
 ```
 
 The `hello` command appears under `/`, and the `greeting` skill triggers automatically when relevant. The `invest` plugin adds shortcuts like `/invest:market` and `/invest:stock <ticker>`, plus 9 skills (market research, company research, sector, industry, macro, technical, earnings, investment decision, geopolitics) that trigger automatically in relevant conversations. The `image` plugin adds `/image:restore <image path>` and a `photo-restoration` skill (conservative high-fidelity restoration: damage repair, two-phase workflow, fidelity over enhancement) that triggers on photo-restoration requests.
 
 ### ZCode
 
-Open Settings → Plugins → **Create** → **Add plugin marketplace**, paste this repo's GitHub address (`owner/repo` or link), a Git URL, or a local directory path, then install `hello-world` (and `invest`, `image`, `dotnet`) from the **Personal** section. ZCode natively loads Claude Code plugin marketplaces, so no extra adaptation is needed.
+Open Settings → Plugins → **Create** → **Add plugin marketplace**, paste this repo's GitHub address (`owner/repo` or link), a Git URL, or a local directory path, then install `hello-world` (and `invest`, `image`, `dotnet`, `engineering`) from the **Personal** section. ZCode natively loads Claude Code plugin marketplaces, so no extra adaptation is needed.
 
 ### Codex
 
@@ -101,35 +110,46 @@ codex plugin marketplace add <github-user>/skills
 codex plugin install hello-world
 codex plugin install invest
 codex plugin install image
+codex plugin install dotnet
+codex plugin install engineering
 ```
 
 Check `codex plugin --help` for the exact subcommands in your Codex version (the Codex plugin CLI is still evolving quickly). Codex ignores `commands/` (no slash commands), but `invest`'s 9 skills and `image`'s photo-restoration skill still trigger normally.
 
 ## Adding a new plugin
 
-1. Copy `plugins/hello-world/` to `plugins/<your-plugin-name>/` (name must match `^[a-z0-9][a-z0-9._-]{0,127}$`).
+1. Copy `plugins/hello-world/` to `plugins/<your-plugin-name>/` (name must match `^[a-z0-9]+(?:[._-][a-z0-9]+)*$`, at most 64 characters).
 2. Update all three manifests inside the plugin: `.zcode-plugin/plugin.json`, `.claude-plugin/plugin.json`, and `.codex-plugin/plugin.json` (keep `name`, `version`, and `description` in sync).
 3. Add an entry to each of the three marketplace indexes: `.claude-plugin/marketplace.json` and the root `marketplace.json` (keep these two identical), plus `.agents/plugins/marketplace.json` (note Codex's `source` uses the object form `{"source": "local", "path": "./plugins/<name>"}`).
-4. Run `bash scripts/validate.sh` to validate.
+4. Install `requirements-dev.txt`, run `python scripts/validate.py` (or `bash scripts/validate.sh`), and add relevant tool regressions and agent cases.
 
-Release note: ZCode compares the marketplace entry's `version` against the installed `plugin.json`, so bump `version` in all three plugin manifests and all three marketplace entries (six places total) after changes, or updates won't be detected.
+Synchronize all six version fields with one command. Preview/check modes never write; the proposed repository is validated before changes, and I/O failures trigger rollback:
+
+```text
+python scripts/sync-version.py engineering 0.1.1 --diff
+python scripts/sync-version.py engineering 0.1.0 --check
+python scripts/sync-version.py engineering 0.1.1
+```
 
 ## Local debug loop
 
-Installing **copies** the plugin into `~/.claude/plugins/cache/` — repo edits are not picked up automatically; a repeated `install` is a no-op, and `update` only compares version numbers. After editing a plugin or skill, refresh and verify in one shot:
+Source refresh behavior depends on the host's installation mode. To refresh installed Claude plugins:
 
-```bash
-bash scripts/update.sh               # validate → force-refresh cache → verify each skill/command in fresh sessions
-bash scripts/update.sh hello-world   # a single plugin
+```text
+bash scripts/update.sh engineering
+python scripts/update.py engineering --output /tmp/engineering-refresh
 ```
 
-The script: ① runs `scripts/validate.sh`; ② ensures this repo is registered as a local marketplace; ③ force-refreshes the cache via `uninstall + install`; ④ slash-invokes every skill and command in a clean `claude -p` session, requiring a verification marker in the reply — it exits 0 only when everything passes.
+The script validates the source, checks the marketplace identity, refreshes the installed plugin, compares installed files and examines host discovery metadata from a fresh session. Echoed markers never count as loading evidence. Exit 0 means artifact/discovery checks passed, 2 means insufficient evidence, and 1 means failure. Task behavior is evaluated separately. This command changes local installations; ordinary validation does not.
 
-For zero-reinstall iteration, symlink the plugin into your personal skills dir instead — edits apply on the next session; remove the link when done:
-
-```bash
-ln -sfn /path/to/skills/plugins/<plugin> ~/.claude/skills/<plugin>
+```text
+python -m pip install -r requirements-dev.txt
+python scripts/validate.py
+python -m unittest discover -s tests -v
+python scripts/test-engineering.py
 ```
+
+See [maintenance workflows](docs/engineering.md), the [evaluation protocol](docs/evaluation.md) and [host compatibility evidence](docs/compatibility.md). The first release implements P0 infrastructure and five P1 skills, with 28 agent scenarios. Deterministic maintenance fixtures pin SDK 10.0.403 and exercise libraries, ASP.NET Core with real SQLite, Worker lifecycle and multi-project contracts. Skills still follow the target project's own versions. Linux/Windows CI is configured; hosted execution must be confirmed from actual runs.
 
 Additional dotnet validation commands:
 

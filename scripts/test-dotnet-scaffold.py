@@ -206,7 +206,7 @@ class Recipes:
         ET.SubElement(refs, "PackageReference", Include="Fixture.Dependency", Version="$(FixtureModernVersion)", Condition=f"'$(TargetFramework)' == '{self.tfm}'", PrivateAssets="all")
         xml_save(tree, project)
         def restore_versions():
-            self.run(root, "restore", project, "--source", feed, "--configfile", self.root / "NuGet.Config", "-p:NuGetAudit=false")
+            self.run(root, "restore", project, f"-p:RestoreAdditionalProjectSources={feed}", "--configfile", self.root / "NuGet.Config", "-p:NuGetAudit=false")
             assets = json.loads((project.parent / "obj/project.assets.json").read_text())
             return {tfm: sorted(items) for tfm, items in assets["targets"].items()}
         before = restore_versions()

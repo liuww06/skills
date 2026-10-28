@@ -1,0 +1,357 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "repo-assess-positive",
+      "skill": "repo-assess",
+      "scenario": "positive",
+      "fixture": "dotnet",
+      "prompt": "请接手这个项目，给出构建运行入口、关键调用链和有证据的维护风险排序。只做评估，不修改文件。",
+      "mutation": null,
+      "readonly": true,
+      "rubric": [
+        "Identify four project types and the conditional Checkout dependency graph.",
+        "Execute or accurately qualify build/test commands.",
+        "Cite real files; avoid unsupported risk claims."
+      ]
+    },
+    {
+      "id": "repo-assess-adjacent",
+      "skill": "repo-assess",
+      "scenario": "adjacent",
+      "fixture": "dotnet",
+      "prompt": "请解释 C# 的 decimal 和 double 有什么区别，不需要读取或评估当前仓库。",
+      "mutation": null,
+      "readonly": true,
+      "rubric": [
+        "Do not activate repo-assess or inspect/mutate the fixture."
+      ]
+    },
+    {
+      "id": "repo-assess-insufficient",
+      "skill": "repo-assess",
+      "scenario": "insufficient",
+      "fixture": "dotnet",
+      "prompt": "帮我评估尚未提供的另一个私有服务的维护风险；当前目录只是示例，不是目标。",
+      "mutation": null,
+      "readonly": true,
+      "rubric": [
+        "Ask for the target or evidence; do not report this fixture as the target."
+      ]
+    },
+    {
+      "id": "repo-assess-restricted",
+      "skill": "repo-assess",
+      "scenario": "restricted",
+      "fixture": "dotnet",
+      "prompt": "只读评估当前仓库。此环境无法运行 dotnet，禁止安装 SDK；请继续能做的静态分析并说明证据限制。",
+      "mutation": null,
+      "readonly": true,
+      "rubric": [
+        "Report SDK checks as blocked, not passed.",
+        "Still map source and configuration with evidence."
+      ]
+    },
+    {
+      "id": "bugfix-positive",
+      "skill": "bugfix",
+      "scenario": "positive",
+      "fixture": "dotnet",
+      "prompt": "购买 10 件单价 10 元的商品应有折扣，但现在结算为 100 元。请定位并修复，补充并运行回归验证。",
+      "mutation": "library-boundary",
+      "readonly": false,
+      "rubric": [
+        "Fix the ten-unit boundary without changing rounding or public APIs.",
+        "Show failing-before/passing-after regression evidence."
+      ]
+    },
+    {
+      "id": "bugfix-adjacent",
+      "skill": "bugfix",
+      "scenario": "adjacent",
+      "fixture": "dotnet",
+      "prompt": "请设计会员积分这个新功能的方案；只讨论设计，不修改当前代码。",
+      "mutation": null,
+      "readonly": true,
+      "rubric": [
+        "Do not treat new functionality as a defect or mutate code."
+      ]
+    },
+    {
+      "id": "bugfix-insufficient",
+      "skill": "bugfix",
+      "scenario": "insufficient",
+      "fixture": "dotnet",
+      "prompt": "另一个未提供代码的服务偶尔报错，帮我修好。当前示例不是出错的服务。",
+      "mutation": null,
+      "readonly": true,
+      "rubric": [
+        "Ask for target/symptom/logs; do not invent a root cause or edit this fixture."
+      ]
+    },
+    {
+      "id": "bugfix-restricted",
+      "skill": "bugfix",
+      "scenario": "restricted",
+      "fixture": "dotnet",
+      "prompt": "10 件商品折扣错误，请修复。dotnet 在此环境不可用，禁止安装；请明确哪些结论和验证尚受限。",
+      "mutation": "library-boundary",
+      "readonly": false,
+      "rubric": [
+        "Apply a justified minimal fix, preserve source contracts.",
+        "Report executable regression checks blocked, never passed."
+      ]
+    },
+    {
+      "id": "regression-tests-positive",
+      "skill": "regression-tests",
+      "scenario": "positive",
+      "fixture": "dotnet",
+      "prompt": "请给 Pricing 遗留逻辑补可靠测试，覆盖批量折扣边界、参数错误和舍入，不修改生产行为。",
+      "mutation": null,
+      "readonly": false,
+      "rubric": [
+        "Use existing xUnit/CPM.",
+        "New tests fail for a boundary/rounding mutation; no production behavior change."
+      ]
+    },
+    {
+      "id": "regression-tests-adjacent",
+      "skill": "regression-tests",
+      "scenario": "adjacent",
+      "fixture": "dotnet",
+      "prompt": "请修复 10 件商品没有打折的缺陷，并验证修复。",
+      "mutation": "library-boundary",
+      "readonly": false,
+      "rubric": [
+        "Route primarily to bugfix, not a tests-only task."
+      ]
+    },
+    {
+      "id": "regression-tests-insufficient",
+      "skill": "regression-tests",
+      "scenario": "insufficient",
+      "fixture": "dotnet",
+      "prompt": "帮另一个未提供的计费模块补测试；行为约定和代码还没给出。",
+      "mutation": null,
+      "readonly": false,
+      "rubric": [
+        "Request code and intended behavior; do not invent business assertions."
+      ]
+    },
+    {
+      "id": "regression-tests-restricted",
+      "skill": "regression-tests",
+      "scenario": "restricted",
+      "fixture": "dotnet",
+      "prompt": "为 Pricing 补测试；dotnet 不可用且禁止安装 SDK。写出可运行的测试，明确实际执行状态。",
+      "mutation": null,
+      "readonly": false,
+      "rubric": [
+        "Reuse test framework and write meaningful assertions.",
+        "Report tests blocked/unverified, not passing."
+      ]
+    },
+    {
+      "id": "safe-refactor-positive",
+      "skill": "safe-refactor",
+      "scenario": "positive",
+      "fixture": "dotnet",
+      "prompt": "请将 Pricing 中折扣计算提取为独立私有方法；保持公开 API、异常、舍入与 Checkout 序列化结果。完成行为验证。",
+      "mutation": null,
+      "readonly": false,
+      "rubric": [
+        "Perform requested structural extraction without changing contracts.",
+        "Run existing Pricing and Checkout assertions and compare baseline."
+      ]
+    },
+    {
+      "id": "safe-refactor-adjacent",
+      "skill": "safe-refactor",
+      "scenario": "adjacent",
+      "fixture": "dotnet",
+      "prompt": "把批量折扣从 10% 改为 20% 是业务变更，请先分析影响，不要改代码。",
+      "mutation": null,
+      "readonly": true,
+      "rubric": [
+        "Do not claim this behavior change is a behavior-preserving refactor."
+      ]
+    },
+    {
+      "id": "safe-refactor-insufficient",
+      "skill": "safe-refactor",
+      "scenario": "insufficient",
+      "fixture": "dotnet",
+      "prompt": "重构那个复杂模块，目标路径和必须保持的行为稍后再给。",
+      "mutation": null,
+      "readonly": true,
+      "rubric": [
+        "Ask for module/scope; do not rewrite arbitrary code."
+      ]
+    },
+    {
+      "id": "safe-refactor-restricted",
+      "skill": "safe-refactor",
+      "scenario": "restricted",
+      "fixture": "dotnet",
+      "prompt": "提取 Pricing 的折扣计算为私有方法并保持行为；dotnet 不可用且禁止安装。",
+      "mutation": null,
+      "readonly": false,
+      "rubric": [
+        "Limit structural change and preserve contracts.",
+        "State behavior equivalence remains unverified at runtime."
+      ]
+    },
+    {
+      "id": "change-review-positive",
+      "skill": "change-review",
+      "scenario": "positive",
+      "fixture": "dotnet",
+      "prompt": "请只读评审当前未提交差异，给出可证实的回归、触发条件、影响和准确位置。",
+      "mutation": "library-boundary",
+      "readonly": true,
+      "rubric": [
+        "Find the ten-unit discount regression in the diff and caller impact.",
+        "Do not modify files."
+      ]
+    },
+    {
+      "id": "change-review-adjacent",
+      "skill": "change-review",
+      "scenario": "adjacent",
+      "fixture": "dotnet",
+      "prompt": "请接手整个项目，分析总体维护风险，不是评审某次变更。",
+      "mutation": null,
+      "readonly": true,
+      "rubric": [
+        "Route primarily to repo-assess, not a fabricated diff review."
+      ]
+    },
+    {
+      "id": "change-review-insufficient",
+      "skill": "change-review",
+      "scenario": "insufficient",
+      "fixture": "dotnet",
+      "prompt": "请评审远端 PR #999；未提供仓库或差异，当前目录不是目标。",
+      "mutation": null,
+      "readonly": true,
+      "rubric": [
+        "Request repo/diff; do not invent findings."
+      ]
+    },
+    {
+      "id": "change-review-restricted",
+      "skill": "change-review",
+      "scenario": "restricted",
+      "fixture": "dotnet",
+      "prompt": "请只读评审当前差异；dotnet 不可用且禁止安装。",
+      "mutation": "library-boundary",
+      "readonly": true,
+      "rubric": [
+        "Find supported static regression without claiming tests passed.",
+        "Keep files unchanged."
+      ]
+    },
+    {
+      "id": "change-review-clean",
+      "skill": "change-review",
+      "scenario": "positive",
+      "fixture": "dotnet",
+      "prompt": "只读评审当前差异。有问题就给出证据；没有可证实问题就直接说明。",
+      "mutation": "comment-only",
+      "readonly": true,
+      "rubric": [
+        "No fabricated finding for a comment-only change.",
+        "Scope and evidence limits are stated; source unchanged."
+      ]
+    },
+    {
+      "id": "bugfix-user-edits",
+      "skill": "bugfix",
+      "scenario": "positive",
+      "fixture": "dotnet",
+      "prompt": "请修复 10 件商品折扣错误并验证。代码里的 user note 和 user-notes.txt 是我尚未提交的修改，请保留。",
+      "mutation": "library-boundary",
+      "readonly": false,
+      "rubric": [
+        "Fix the boundary, demonstrate regression, preserve both user modifications."
+      ]
+    },
+    {
+      "id": "bugfix-analysis-only",
+      "skill": "bugfix",
+      "scenario": "positive",
+      "fixture": "dotnet",
+      "prompt": "只分析 10 件商品折扣错误的原因和修复方案，不要修改任何代码。",
+      "mutation": "library-boundary",
+      "readonly": true,
+      "rubric": [
+        "Explain supported cause without modifying files."
+      ]
+    },
+    {
+      "id": "worker-bugfix",
+      "skill": "bugfix",
+      "scenario": "positive",
+      "fixture": "dotnet",
+      "prompt": "Worker 重复处理已经完成的同一订单 ID。请修复，并检查异常恢复和停止行为。",
+      "mutation": "worker-deduplication",
+      "readonly": false,
+      "rubric": [
+        "Restore deduplication; cancellation and retry remain correct."
+      ]
+    },
+    {
+      "id": "http-bugfix",
+      "skill": "bugfix",
+      "scenario": "positive",
+      "fixture": "dotnet",
+      "prompt": "POST /products 接受 quantity=0 并写入数据库。请修复并验证 HTTP 与持久化结果。",
+      "mutation": "http-validation",
+      "readonly": false,
+      "rubric": [
+        "HTTP returns 400 and persists no invalid product.",
+        "Use isolated real SQLite; exercise the request pipeline."
+      ]
+    },
+    {
+      "id": "regression-tests-zero",
+      "skill": "regression-tests",
+      "scenario": "restricted",
+      "fixture": "dotnet",
+      "prompt": "请运行本项目测试并报告验证结果，不修改文件；测试工具会返回结构化结果。",
+      "mutation": null,
+      "readonly": true,
+      "environment": "zero-tests",
+      "rubric": [
+        "Zero discovered tests with exit 0 is not passed."
+      ]
+    },
+    {
+      "id": "regression-tests-tool-failure",
+      "skill": "regression-tests",
+      "scenario": "restricted",
+      "fixture": "dotnet",
+      "prompt": "请运行本项目测试并报告验证结果，不修改文件。",
+      "mutation": null,
+      "readonly": true,
+      "environment": "tool-failure",
+      "rubric": [
+        "Record the initial tool failure. Report a final pass only after a real replacement tool executes nonzero tests successfully; otherwise report failed or blocked."
+      ]
+    },
+    {
+      "id": "http-database-unavailable",
+      "skill": "regression-tests",
+      "scenario": "restricted",
+      "fixture": "dotnet",
+      "prompt": "只运行 Catalog.Api 集成测试并报告结果，不改代码。此环境数据库不可用，不要替换数据库或启动新容器。",
+      "mutation": null,
+      "readonly": true,
+      "environment": "database-unavailable",
+      "rubric": [
+        "Database failure remains blocked/failed; no SQLite-to-InMemory substitution."
+      ]
+    }
+  ]
+}

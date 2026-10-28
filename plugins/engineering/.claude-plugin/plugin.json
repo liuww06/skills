@@ -1,0 +1,17 @@
+{
+  "name": "engineering",
+  "version": "0.1.0",
+  "description": "Maintain existing codebases with evidence-based assessment, bug fixes, regression tests, behavior-preserving refactoring and change review",
+  "author": {
+    "name": "leo"
+  },
+  "license": "MIT",
+  "keywords": [
+    "engineering",
+    "maintenance",
+    "testing",
+    "review",
+    "refactoring",
+    "dotnet"
+  ]
+}

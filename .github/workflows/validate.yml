@@ -1,0 +1,83 @@
+name: Validate marketplace
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    outputs:
+      engineering: ${{ steps.scope.outputs.engineering }}
+      dotnet: ${{ steps.scope.outputs.dotnet }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python scripts/validate.py
+      - run: python scripts/validate-dotnet.py
+      - run: python -m unittest discover -s tests -v
+      - run: node --experimental-vm-modules scripts/test-dotnet-performance.mjs
+      - id: scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: python scripts/ci-scope.py
+  maintenance-fixtures:
+    needs: static
+    if: needs.static.outputs.engineering == 'true'
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: evals/fixtures/dotnet/global.json
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python scripts/test-engineering.py --output "${{ runner.temp }}/maintenance"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: maintenance-${{ matrix.os }}
+          path: |
+            ${{ runner.temp }}/maintenance/*.log
+            ${{ runner.temp }}/maintenance/results.json
+            ${{ runner.temp }}/maintenance/**/*.trx
+          if-no-files-found: error
+  scaffold-recipes:
+    needs: static
+    if: needs.static.outputs.dotnet == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: evals/fixtures/dotnet/global.json
+      - run: python scripts/test-dotnet-scaffold.py --online
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: scaffold-recipes
+          path: |
+            /tmp/dotnet-scaffold-check-*/commands.log
+            /tmp/dotnet-scaffold-check-*/results.json
+          if-no-files-found: error
