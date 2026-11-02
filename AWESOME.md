@@ -3,7 +3,7 @@
 > 面向 Claude Code / Codex / ZCode 等编程 Agent,收录官方与社区高质量的开源技能(skill),以及 **Agent 上下文规范**资源——即写进 AGENTS.md / CLAUDE.md 等规则文件的工程规范、护栏与指令架构。
 >
 > 收录标准:官方出品或社区口碑明确、维护活跃、可直接取用,每条附中文点评。
-> 最后核对:2026-09(2026-09-28 扩充,star 为当日 GitHub API 快照,以仓库实况为准)。
+> 最后核对:2026-11(2026-09-28 扩充,2026-11-02 增补 ui-skills、jakubkrehel/skills 与 elvarofficial/teardown;star 为各条核对当日 GitHub API 快照,以仓库实况为准)。
 
 ## 一、官方资源与开放标准
 
@@ -59,6 +59,8 @@
 - [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill) — 单项精品(约 90.7k star,MIT):给 AI"审美品味",阻止生成千篇一律的模板化界面。
 - [Nutlope/hallmark](https://github.com/Nutlope/hallmark) — Together AI 联合创始人出品(约 29.2k star,MIT):"拒绝 AI slop 审美"的设计技能,20 个主题 + 21 个宏结构 + 57 道反 slop 质检门。
 - [alchaincyf/huashu-design](https://github.com/alchaincyf/huashu-design) — 花叔的 HTML 原生设计技能(约 24.5k star,MIT):高保真原型 / 网页设计,中文文档友好。
+- [ibelick/ui-skills](https://github.com/ibelick/ui-skills) — 设计工程师技能集(约 10.5k star,MIT,2026-11-02 核对):9 个 UI 技能——去 AI slop 基线清理(baseline-ui)、只读 UI 审计并产出实施计划(improve-ui)、从现有产品反推 DESIGN.md 设计系统文档(create-design-md)、组件画布 / 自由画布,及无障碍、SEO 元数据、动效性能三项专项修复;由 motion-primitives 作者 Julien Thibeaut 维护,配套 `npx ui-skills` CLI、[MCP 服务器](https://www.ui-skills.com/mcp)与 [playbook](https://www.ui-skills.com/playbook),也可直接复制仓库 `skills/` 目录(均为纯 SKILL.md)。
+- [jakubkrehel/skills](https://github.com/jakubkrehel/skills) — 界面质量技能全家桶(约 10.2k star,MIT,2026-11-02 核对):15 个技能——better-* 七件套(interface 跨维度综合评审 / ui 细节抛光 / typography / colors / accessibility 对照 WCAG 2.2 / layout / writing 界面文案),加 interface-review(评审分支 / PR 引入的界面回归)、explain-interface(逆向解释网站或动效如何实现)、build-design(Figma 或设计图还原 UI)及 variant / state-machine / break / teardown 四个探索压测工具;出品人 Jakub Krehel 为设计工程杂志 [Interfaces](https://interfaces.dev/) 主理人;`npx skills add jakubkrehel/skills` 一键安装,或 `/plugin marketplace add jakubkrehel/skills` 作为 Claude Code 插件市场取用;技能为 SKILL.md + 按需加载的参考文档,仅 teardown 捆绑本地渲染 Node 脚本。
 - React / NestJS / Unity 等框架技能与 65 技能全栈渐进披露包,收录于 [BehiSecc 合集](https://github.com/BehiSecc/awesome-claude-skills)。
 
 ### 2.3 后端与语言生态
@@ -113,6 +115,7 @@
 - [tt-a1i/archify](https://github.com/tt-a1i/archify) — 约 72.9k star(MIT):生成可验证的架构 / 时序 / 数据流 / 生命周期图(自包含 HTML),兼容 Claude Code / Cursor / Codex / OpenCode。
 - [cathrynlavery/diagram-design](https://github.com/cathrynlavery/diagram-design) — 约 42.6k star(MIT):编辑级图表设计(Checklist Design 作者出品,自包含 HTML + SVG)。
 - [JimLiu/baoyu-skills](https://github.com/JimLiu/baoyu-skills) — 宝玉的中文内容创作 20+ 技能(约 26.2k star,MIT):公众号排版、封面图、文章配图到发布的全流程,README 强调"按需安装"。
+- [elvarofficial/teardown](https://github.com/elvarofficial/teardown) — 单项精品(约 1.1k star,MIT,2026-11-02 核对):把任意机械或机构做成可拆解的 3D 交互模拟器——单页离线 HTML(three.js 与字体全部内联),机器居中运转、四周面板读同一模型的真实数值、每个子系统一键展开,无人操作时自动巡游演示;同一套代码还可逐帧录成 60 fps 视频并合成程序化配乐;自带 V8 发动机、Cessna 起落架、Strandbeest 风力行走机构三个完整范例;工具型技能,依赖较重(Node 20+ 与 Playwright Chromium,视频另需 ffmpeg 与 Python 3),基于 whaleyxbt/claude-motion 构建;`npx skills add elvarofficial/teardown -g -a claude-code` 安装。注意与 [2.2](#22-前端与全栈) jakubkrehel/skills 中的同名技能用途不同:此处做 3D 模拟器,彼处做技术插画。
 
 ### 2.10 科学与垂直领域
 
