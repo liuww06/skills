@@ -3,7 +3,7 @@
 > 面向 Claude Code / Codex / ZCode 等编程 Agent,收录官方与社区高质量的开源技能(skill),以及 **Agent 上下文规范**资源——即写进 AGENTS.md / CLAUDE.md 等规则文件的工程规范、护栏与指令架构。
 >
 > 收录标准:官方出品或社区口碑明确、维护活跃、可直接取用,每条附中文点评。
-> 最后核对:2026-11(2026-09-28 扩充,2026-11-02 增补 ui-skills、jakubkrehel/skills 与 elvarofficial/teardown;star 为各条核对当日 GitHub API 快照,以仓库实况为准)。
+> 最后核对:2026-11(2026-09-28 扩充,2026-11-02 增补 ui-skills、jakubkrehel/skills 与 elvarofficial/teardown,2026-11-08 增补 cloudflare/security-audit-skill;star 为各条核对当日 GitHub API 快照,以仓库实况为准)。
 
 ## 一、官方资源与开放标准
 
@@ -104,6 +104,7 @@
 
 ### 2.8 安全
 
+- [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill) — Cloudflare 官方安全审计技能(约 65.8k star,MIT,2026-11-08 核对):单仓库单技能,把 coding agent 变成安全审计员;六阶段编排隔离子代理——侦察(产出 architecture.md 与覆盖率台账 coverage-ledger.json)→ 按台账分派 hunter 逐面排查、覆盖率批评者查缺 → 每个候选交给未参与发现的全新 verifier 对抗验证 → 结构化输出 findings.json(confirmed / needs_validation / rejected 三档裁决,零依赖 Node 脚本对照 JSON Schema 校验)→ 独立复核最终记录 → 目标中立报告(REPORT.md / FINDINGS-DETAIL.md 等);附内存安全与二进制、提示注入与 LLM、Web 协议与认证、客户端、供应链与发布、云与部署、RPC 与消息、资源耗尽、租户隔离、桌面与本地 IPC 十类攻击面 hunting 手册。默认指引模式,仅显式要求完整审计或渗透测试才跑全流程;硬性要求 OS 级沙箱(禁外网、资源限额、只许写指定暂存路径),无沙箱时所有 lead 保持 needs_validation 而不执行目标代码。官方实测多次运行结果可加,单次运行约能覆盖重复运行漏洞总量的一半;`npx skills add https://github.com/cloudflare/security-audit-skill --skill security-audit` 安装,方法源起见博客 [Build your own vulnerability harness](https://blog.cloudflare.com/build-your-own-vulnerability-harness)。
 - [trailofbits/skills](https://github.com/trailofbits/skills) — 顶级安全审计公司 Trail of Bits 的安全技能市场:静态分析、威胁建模、智能合约审计、GitHub Actions 安全审查(agentic-actions-auditor)、差异代码评审等数十个技能,源自其真实审计工作流。
 - [trailofbits/skills-curated](https://github.com/trailofbits/skills-curated) — 上述技能经人工审核的精选版,每项均通过质量与安全审查。
 - [zhaoxuya520/reverse-skill](https://github.com/zhaoxuya520/reverse-skill) — 约 38.4k star(MIT):逆向工程 / 授权渗透测试 / 安全研究的技能路由包,定位"授权测试"边界清晰。
